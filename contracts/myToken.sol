@@ -85,7 +85,3 @@ contract myToken is IERC20 {
     }
 
 }
-
-
-// Kitty, KTY, 10000
-// 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2
