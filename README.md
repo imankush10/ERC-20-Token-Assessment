@@ -1,28 +1,109 @@
-REMIX DEFAULT WORKSPACE
+# ERC-20 Kitty Token Contract
 
-Remix default workspace is present when:
-i. Remix loads for the very first time 
-ii. A new workspace is created with 'Default' template
-iii. There are no files existing in the File Explorer
+This Solidity program is a demonstration of ERC-20 Token with support of transfer, minting and burning of coins.
 
-This workspace contains 3 directories:
+## Description
 
-1. 'contracts': Holds three contracts with increasing levels of complexity.
-2. 'scripts': Contains four typescript files to deploy a contract. It is explained below.
-3. 'tests': Contains one Solidity test file for 'Ballot' contract & one JS test file for 'Storage' contract.
+This Solidity program defines an ERC20 token with essential functionalities. It includes functions for minting, where only the founder of the token can create new tokens, and burning, which allows any holder to destroy their tokens. Additionally, the contract supports standard ERC20 transfer and allowance operations, enabling tokens to be transferred between any accounts on the blockchain.
 
-SCRIPTS
+## Getting Started
 
-The 'scripts' folder has four typescript files which help to deploy the 'Storage' contract using 'web3.js' and 'ethers.js' libraries.
+### Executing Program
 
-For the deployment of any other contract, just update the contract's name from 'Storage' to the desired contract and provide constructor arguments accordingly 
-in the file `deploy_with_ethers.ts` or  `deploy_with_web3.ts`
+To run this program, you can use Remix, an online Solidity IDE. To get started, go to the Remix website at [Remix Ethereum](https://remix.ethereum.org/).
 
-In the 'tests' folder there is a script containing Mocha-Chai unit tests for 'Storage' contract.
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.26;
 
-To run a script, right click on file name in the file explorer and click 'Run'. Remember, Solidity file must already be compiled.
-Output from script will appear in remix terminal.
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-Please note, require/import is supported in a limited manner for Remix supported modules.
-For now, modules supported by Remix are ethers, web3, swarmgw, chai, multihashes, remix and hardhat only for hardhat.ethers object/plugin.
-For unsupported modules, an error like this will be thrown: '<module_name> module require is not supported by Remix IDE' will be shown.
+contract myToken is IERC20 {
+    string public name;
+    string public symbol;
+    address public founder;
+    uint256 public tokenTotalSupply;
+    mapping(address=>uint256) balances;
+    mapping(address => mapping(address => uint256)) allowances;
+
+    constructor(string memory _name, string memory _symbol, uint _tokenTotalSupply) {
+        name = _name;
+        symbol = _symbol;
+        founder = msg.sender;
+        tokenTotalSupply = _tokenTotalSupply;
+        balances[founder]= tokenTotalSupply;
+    }
+
+    function totalSupply() public view override returns (uint256) {
+        return tokenTotalSupply;
+    }
+
+    function balanceOf(address account) public view override returns (uint256) {
+        return balances[account];
+    }
+
+    function transfer(address recipient, uint256 amount) public override returns (bool) {
+        require(amount>0, "Invalid transfer amount");
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+
+        balances[msg.sender] -= amount;
+        balances[recipient] += amount;
+
+        emit Transfer(msg.sender, recipient, amount);
+        return true;
+    }
+
+    function allowance(address owner, address spender) public view override returns (uint256) {
+        return allowances[owner][spender];
+    }
+
+    function approve(address spender, uint256 amount) public override returns (bool) {
+        require(amount>0, "Invalid allowance amount");
+
+        allowances[msg.sender][spender] = amount;
+        
+        emit Approval(msg.sender, spender, amount);
+        return true;
+    }
+
+    function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
+        require(amount>0, "Invalid allowance amount");
+        require(balances[sender] >= amount, "Insufficient supply");
+        require(amount<=allowances[sender][recipient], "This amount is not allowed");
+
+        allowances[sender][recipient] -= amount;
+        balances[sender] -= amount;
+        balances[recipient] +=amount;
+
+        emit Transfer(sender, recipient, amount);
+        return true;
+    }
+
+    function mint(address recipient, uint256 amount) public returns(bool) {
+        require(msg.sender == founder, "Unauthorized");
+
+        balances[recipient] += amount;
+        tokenTotalSupply += amount;
+
+        emit Transfer(address(0), recipient, amount);
+        return true;
+    }
+
+    function burn(uint256 amount) public returns(bool) {
+        require(balances[msg.sender]>=amount, "Insufficient balance");
+
+        balances[msg.sender] -= amount;
+        tokenTotalSupply -= amount;
+
+        emit Transfer(msg.sender, address(0), amount);
+        return true;
+    }
+
+}
+```
+To compile the code, click on the "Solidity Compiler" tab in the left-hand sidebar. Make sure the "Compiler" option is set to "0.8.18" (or another compatible version), and then click on the "Compile Token.sol" button.
+
+Once the code is compiled, you can deploy the contract by clicking on the "Deploy & Run Transactions" tab in the left-hand sidebar. Select the "Token" contract from the dropdown menu, and then click on the "Deploy" button.
+
+## License
+This project is licensed under the MIT License - see the LICENSE.md file for details
