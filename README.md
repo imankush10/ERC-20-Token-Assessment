@@ -42,7 +42,7 @@ balanceOf(address account);
 
 ```solidity
 transfer(address recipient, uint256 amount);
-// Allows users to transfer tokens to another address. The caller's balance is reduced, and the recipient's balance is increased.
+// Allows users to transfer tokens to another address. Caller's balance is reduced, and recipient's balance is increased.
 ```
 
 ```solidity
