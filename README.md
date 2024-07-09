@@ -28,7 +28,7 @@ mint(address recipient, uint256 amount);
 
 ```solidity
 burn(uint256 amount);
-// Allows users to burn (destroy) a specific amount of their tokens. The caller's balance and the total supply are reduced accordingly.
+// Allows users to burn (destroy) a specific amount of their tokens.
 ```
 
 ```solidity
