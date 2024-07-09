@@ -9,56 +9,17 @@ This Solidity program defines an ERC20 token with essential functionalities. It 
 # Contract Overview
 The Token contract is a basic implementation of an ERC20-like token. It features the following components:
 
-1) `name`: The name of the token. <br>
-
-2) `symbol`: The symbol of the token. <br>
-
-3) `founder`: The address that deploys the contract and holds the initial supply of tokens. <br>
-
-4) `balances`: A mapping of addresses to their token balances. <br>
-
-5) `tokenTotalSupply`: The total supply of tokens in the contract. <br>
-
-6) `allowances`: A mapping of allowances between addresses.
+1) `owner` : The address of owner which gets assigned when the contract is deployed
 
 # Usage
 Constructor
 The contract constructor initializes the contract with an initial supply of tokens. The deploying address becomes the founder of the contract and holds the entire initial supply.
 
 ```solidity
-constructor(string memory _name, string memory _symbol, uint _tokenTotalSupply);
+constructor(uint _initialSupply);
 ```
 
 # Functions
-```solidity
-totalSupply();
-// Returns the total supply of tokens in the contract.
-```
-
-```solidity
-balanceOf(address account);
-// Returns the token balance of a given address.
-```
-
-```solidity
-transfer(address recipient, uint256 amount);
-// Allows users to transfer tokens to another address. Caller's balance is reduced, and recipient's balance is increased.
-```
-
-```solidity
-allowance(address owner, address spender);
-// Returns the remaining number of tokens that `spender` is allowed to spend on behalf of `owner`.
-```
-
-```solidity
-approve(address spender, uint256 amount);
-// Sets the allowance for `spender` over the caller's tokens.
-```
-
-```solidity
-transferFrom(address sender, address recipient, uint256 amount);
-// Transfers `amount` of tokens from `sender` to `recipient`, using the allowance mechanism.
-```
 
 ```solidity
 mint(address recipient, uint256 amount);
@@ -70,10 +31,15 @@ burn(uint256 amount);
 // Allows users to burn (destroy) a specific amount of their tokens. The caller's balance and the total supply are reduced accordingly.
 ```
 
+```solidity
+transferTo(address recipient, uint256 amount);
+// Transfer amount of tokens from sender to recipient
+```
+
 ## Getting Started
 
 ### Installation
-[Open this program in Remix](https://remix.ethereum.org/#code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVApwcmFnbWEgc29saWRpdHkgXjAuOC4yNjsKCmltcG9ydCB7SUVSQzIwfSBmcm9tICJAb3BlbnplcHBlbGluL2NvbnRyYWN0cy90b2tlbi9FUkMyMC9JRVJDMjAuc29sIjsKCmNvbnRyYWN0IG15VG9rZW4gaXMgSUVSQzIwIHsKICAgIHN0cmluZyBwdWJsaWMgbmFtZTsKICAgIHN0cmluZyBwdWJsaWMgc3ltYm9sOwogICAgYWRkcmVzcyBwdWJsaWMgZm91bmRlcjsKICAgIHVpbnQyNTYgcHVibGljIHRva2VuVG90YWxTdXBwbHk7CiAgICBtYXBwaW5nKGFkZHJlc3M9PnVpbnQyNTYpIGJhbGFuY2VzOwogICAgbWFwcGluZyhhZGRyZXNzID0+IG1hcHBpbmcoYWRkcmVzcyA9PiB1aW50MjU2KSkgYWxsb3dhbmNlczsKCiAgICBjb25zdHJ1Y3RvcihzdHJpbmcgbWVtb3J5IF9uYW1lLCBzdHJpbmcgbWVtb3J5IF9zeW1ib2wsIHVpbnQgX3Rva2VuVG90YWxTdXBwbHkpIHsKICAgICAgICBuYW1lID0gX25hbWU7CiAgICAgICAgc3ltYm9sID0gX3N5bWJvbDsKICAgICAgICBmb3VuZGVyID0gbXNnLnNlbmRlcjsKICAgICAgICB0b2tlblRvdGFsU3VwcGx5ID0gX3Rva2VuVG90YWxTdXBwbHk7CiAgICAgICAgYmFsYW5jZXNbZm91bmRlcl09IHRva2VuVG90YWxTdXBwbHk7CiAgICB9CgogICAgZnVuY3Rpb24gdG90YWxTdXBwbHkoKSBwdWJsaWMgdmlldyBvdmVycmlkZSByZXR1cm5zICh1aW50MjU2KSB7CiAgICAgICAgcmV0dXJuIHRva2VuVG90YWxTdXBwbHk7CiAgICB9CgogICAgZnVuY3Rpb24gYmFsYW5jZU9mKGFkZHJlc3MgYWNjb3VudCkgcHVibGljIHZpZXcgb3ZlcnJpZGUgcmV0dXJucyAodWludDI1NikgewogICAgICAgIHJldHVybiBiYWxhbmNlc1thY2NvdW50XTsKICAgIH0KCiAgICBmdW5jdGlvbiB0cmFuc2ZlcihhZGRyZXNzIHJlY2lwaWVudCwgdWludDI1NiBhbW91bnQpIHB1YmxpYyBvdmVycmlkZSByZXR1cm5zIChib29sKSB7CiAgICAgICAgcmVxdWlyZShhbW91bnQ+MCwgIkludmFsaWQgdHJhbnNmZXIgYW1vdW50Iik7CiAgICAgICAgcmVxdWlyZShiYWxhbmNlc1ttc2cuc2VuZGVyXSA+PSBhbW91bnQsICJJbnN1ZmZpY2llbnQgYmFsYW5jZSIpOwoKICAgICAgICBiYWxhbmNlc1ttc2cuc2VuZGVyXSAtPSBhbW91bnQ7CiAgICAgICAgYmFsYW5jZXNbcmVjaXBpZW50XSArPSBhbW91bnQ7CgogICAgICAgIGVtaXQgVHJhbnNmZXIobXNnLnNlbmRlciwgcmVjaXBpZW50LCBhbW91bnQpOwogICAgICAgIHJldHVybiB0cnVlOwogICAgfQoKICAgIGZ1bmN0aW9uIGFsbG93YW5jZShhZGRyZXNzIG93bmVyLCBhZGRyZXNzIHNwZW5kZXIpIHB1YmxpYyB2aWV3IG92ZXJyaWRlIHJldHVybnMgKHVpbnQyNTYpIHsKICAgICAgICByZXR1cm4gYWxsb3dhbmNlc1tvd25lcl1bc3BlbmRlcl07CiAgICB9CgogICAgZnVuY3Rpb24gYXBwcm92ZShhZGRyZXNzIHNwZW5kZXIsIHVpbnQyNTYgYW1vdW50KSBwdWJsaWMgb3ZlcnJpZGUgcmV0dXJucyAoYm9vbCkgewogICAgICAgIHJlcXVpcmUoYW1vdW50PjAsICJJbnZhbGlkIGFsbG93YW5jZSBhbW91bnQiKTsKCiAgICAgICAgYWxsb3dhbmNlc1ttc2cuc2VuZGVyXVtzcGVuZGVyXSA9IGFtb3VudDsKICAgICAgICAKICAgICAgICBlbWl0IEFwcHJvdmFsKG1zZy5zZW5kZXIsIHNwZW5kZXIsIGFtb3VudCk7CiAgICAgICAgcmV0dXJuIHRydWU7CiAgICB9CgogICAgZnVuY3Rpb24gdHJhbnNmZXJGcm9tKGFkZHJlc3Mgc2VuZGVyLCBhZGRyZXNzIHJlY2lwaWVudCwgdWludDI1NiBhbW91bnQpIHB1YmxpYyBvdmVycmlkZSByZXR1cm5zIChib29sKSB7CiAgICAgICAgcmVxdWlyZShhbW91bnQ+MCwgIkludmFsaWQgYWxsb3dhbmNlIGFtb3VudCIpOwogICAgICAgIHJlcXVpcmUoYmFsYW5jZXNbc2VuZGVyXSA+PSBhbW91bnQsICJJbnN1ZmZpY2llbnQgc3VwcGx5Iik7CiAgICAgICAgcmVxdWlyZShhbW91bnQ8PWFsbG93YW5jZXNbc2VuZGVyXVtyZWNpcGllbnRdLCAiVGhpcyBhbW91bnQgaXMgbm90IGFsbG93ZWQiKTsKCiAgICAgICAgYWxsb3dhbmNlc1tzZW5kZXJdW3JlY2lwaWVudF0gLT0gYW1vdW50OwogICAgICAgIGJhbGFuY2VzW3NlbmRlcl0gLT0gYW1vdW50OwogICAgICAgIGJhbGFuY2VzW3JlY2lwaWVudF0gKz1hbW91bnQ7CgogICAgICAgIGVtaXQgVHJhbnNmZXIoc2VuZGVyLCByZWNpcGllbnQsIGFtb3VudCk7CiAgICAgICAgcmV0dXJuIHRydWU7CiAgICB9CgogICAgZnVuY3Rpb24gbWludChhZGRyZXNzIHJlY2lwaWVudCwgdWludDI1NiBhbW91bnQpIHB1YmxpYyByZXR1cm5zKGJvb2wpIHsKICAgICAgICByZXF1aXJlKG1zZy5zZW5kZXIgPT0gZm91bmRlciwgIlVuYXV0aG9yaXplZCIpOwoKICAgICAgICBiYWxhbmNlc1tyZWNpcGllbnRdICs9IGFtb3VudDsKICAgICAgICB0b2tlblRvdGFsU3VwcGx5ICs9IGFtb3VudDsKCiAgICAgICAgZW1pdCBUcmFuc2ZlcihhZGRyZXNzKDApLCByZWNpcGllbnQsIGFtb3VudCk7CiAgICAgICAgcmV0dXJuIHRydWU7CiAgICB9CgogICAgZnVuY3Rpb24gYnVybih1aW50MjU2IGFtb3VudCkgcHVibGljIHJldHVybnMoYm9vbCkgewogICAgICAgIHJlcXVpcmUoYmFsYW5jZXNbbXNnLnNlbmRlcl0+PWFtb3VudCwgIkluc3VmZmljaWVudCBiYWxhbmNlIik7CgogICAgICAgIGJhbGFuY2VzW21zZy5zZW5kZXJdIC09IGFtb3VudDsKICAgICAgICB0b2tlblRvdGFsU3VwcGx5IC09IGFtb3VudDsKCiAgICAgICAgZW1pdCBUcmFuc2Zlcihtc2cuc2VuZGVyLCBhZGRyZXNzKDApLCBhbW91bnQpOwogICAgICAgIHJldHVybiB0cnVlOwogICAgfQoKfQ&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.26+commit.8a97fa7a.js)
+[Open in Remix](remix.ethereum.org/?code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVApwcmFnbWEgc29saWRpdHkgXjAuOC4yNjsKCmltcG9ydCB7RVJDMjB9IGZyb20gIkBvcGVuemVwcGVsaW4vY29udHJhY3RzL3Rva2VuL0VSQzIwL0VSQzIwLnNvbCI7Cgpjb250cmFjdCBteVRva2VuIGlzIEVSQzIwIHsKCiAgICBhZGRyZXNzIG93bmVyOwoKICAgIGNvbnN0cnVjdG9yKHVpbnQgX2luaXRpYWxTdXBwbHkpIEVSQzIwKCJLaXR0eSIsICJLVFkiKSB7CiAgICAgICAgb3duZXIgPSBtc2cuc2VuZGVyOwogICAgICAgIF9taW50KG93bmVyLCBfaW5pdGlhbFN1cHBseSk7CiAgICB9CgogICAgbW9kaWZpZXIgb3duZXJPbmx5ewogICAgICAgIHJlcXVpcmUobXNnLnNlbmRlcj09b3duZXIsICJOb3QgYXV0aG9yaXplZCIpOwogICAgICAgIF87CiAgICB9CgogICAgZnVuY3Rpb24gbWludChhZGRyZXNzIHRvLCB1aW50MjU2IGFtb3VudCkgcHVibGljIG93bmVyT25seSB7CiAgICAgICAgX21pbnQodG8sIGFtb3VudCk7CiAgICB9CgogICAgZnVuY3Rpb24gYnVybih1aW50MjU2IGFtb3VudCkgcHVibGljIHsKICAgICAgICBfYnVybihtc2cuc2VuZGVyLCBhbW91bnQpOwogICAgfQogICAgCiAgICBmdW5jdGlvbiB0cmFuc2ZlclRvKGFkZHJlc3MgcmVjaXBpZW50LCB1aW50MjU2IGFtb3VudCkgcHVibGljIHsKICAgICAgICByZXF1aXJlKGJhbGFuY2VPZihtc2cuc2VuZGVyKSA+PSBhbW91bnQsICJJbnN1ZmZpY2llbnQgYmFsYW5jZSIpOwogICAgICAgIHRyYW5zZmVyKHJlY2lwaWVudCwgYW1vdW50KTsKICAgIH0KfQ=)
 
 ### Executing Program
 To run this program, you can use Remix, an online Solidity IDE. To get started, go to the Remix website at [Remix Ethereum](https://remix.ethereum.org/).
@@ -83,89 +49,34 @@ To run this program, you can use Remix, an online Solidity IDE. To get started, 
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract myToken is IERC20 {
-    string public name;
-    string public symbol;
-    address public founder;
-    uint256 public tokenTotalSupply;
-    mapping(address=>uint256) balances;
-    mapping(address => mapping(address => uint256)) allowances;
+contract myToken is ERC20 {
 
-    constructor(string memory _name, string memory _symbol, uint _tokenTotalSupply) {
-        name = _name;
-        symbol = _symbol;
-        founder = msg.sender;
-        tokenTotalSupply = _tokenTotalSupply;
-        balances[founder]= tokenTotalSupply;
+    address owner;
+
+    constructor(uint _initialSupply) ERC20("Kitty", "KTY") {
+        owner = msg.sender;
+        _mint(owner, _initialSupply);
     }
 
-    function totalSupply() public view override returns (uint256) {
-        return tokenTotalSupply;
+    modifier ownerOnly{
+        require(msg.sender==owner, "Not authorized");
+        _;
     }
 
-    function balanceOf(address account) public view override returns (uint256) {
-        return balances[account];
+    function mint(address to, uint256 amount) public ownerOnly {
+        _mint(to, amount);
     }
 
-    function transfer(address recipient, uint256 amount) public override returns (bool) {
-        require(amount>0, "Invalid transfer amount");
-        require(balances[msg.sender] >= amount, "Insufficient balance");
-
-        balances[msg.sender] -= amount;
-        balances[recipient] += amount;
-
-        emit Transfer(msg.sender, recipient, amount);
-        return true;
+    function burn(uint256 amount) public {
+        _burn(msg.sender, amount);
     }
-
-    function allowance(address owner, address spender) public view override returns (uint256) {
-        return allowances[owner][spender];
+    
+    function transferTo(address recipient, uint256 amount) public {
+        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
+        transfer(recipient, amount);
     }
-
-    function approve(address spender, uint256 amount) public override returns (bool) {
-        require(amount>0, "Invalid allowance amount");
-
-        allowances[msg.sender][spender] = amount;
-        
-        emit Approval(msg.sender, spender, amount);
-        return true;
-    }
-
-    function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
-        require(amount>0, "Invalid allowance amount");
-        require(balances[sender] >= amount, "Insufficient supply");
-        require(amount<=allowances[sender][recipient], "This amount is not allowed");
-
-        allowances[sender][recipient] -= amount;
-        balances[sender] -= amount;
-        balances[recipient] +=amount;
-
-        emit Transfer(sender, recipient, amount);
-        return true;
-    }
-
-    function mint(address recipient, uint256 amount) public returns(bool) {
-        require(msg.sender == founder, "Unauthorized");
-
-        balances[recipient] += amount;
-        tokenTotalSupply += amount;
-
-        emit Transfer(address(0), recipient, amount);
-        return true;
-    }
-
-    function burn(uint256 amount) public returns(bool) {
-        require(balances[msg.sender]>=amount, "Insufficient balance");
-
-        balances[msg.sender] -= amount;
-        tokenTotalSupply -= amount;
-
-        emit Transfer(msg.sender, address(0), amount);
-        return true;
-    }
-
 }
 ```
 
